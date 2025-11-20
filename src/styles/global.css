@@ -2,17 +2,6 @@
 @import "components.css";
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  color: var(--main-color);
-  font-family: var(--main-text-font);
-  background-color: var(--background-color);
-}
-
 :root {
   scroll-behavior: smooth;
   --main-text-font: "Roboto Mono", monospace;
