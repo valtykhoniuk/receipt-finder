@@ -1,8 +1,21 @@
+const ALL_INGREDIENTS = [
+  "egg",
+  "cheese",
+  "milk",
+  "tomato",
+  "chicken",
+  "rice",
+  "potato",
+  "flour",
+];
+
 const Header = ({
   mealType,
   maxCalories,
+  selectedIngredients,
   onMealTypeChange,
   onMaxCaloriesChange,
+  onIngredientToggle,
   onClear,
 }) => {
   return (
@@ -36,6 +49,23 @@ const Header = ({
               value={maxCalories}
               onChange={(e) => onMaxCaloriesChange(Number(e.target.value))}
             />
+          </div>
+
+          <div className="filters__group">
+            <label>Ingredients:</label>
+
+            <div className="ingredients-list">
+              {ALL_INGREDIENTS.map((ing) => (
+                <label key={ing}>
+                  <input
+                    type="checkbox"
+                    checked={selectedIngredients.includes(ing)}
+                    onChange={() => onIngredientToggle(ing)}
+                  />
+                  {ing}
+                </label>
+              ))}
+            </div>
           </div>
 
           <div className="filters__actions">

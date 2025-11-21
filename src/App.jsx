@@ -9,6 +9,7 @@ function App() {
   const [allRecipes, setAllRecipes] = useState([]);
   const [mealType, setMealType] = useState("");
   const [maxCalories, setMaxCalories] = useState(800);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
 
   const loadRecipes = useCallback(async () => {
     const data = await controller("/receipts");
@@ -21,22 +22,38 @@ function App() {
 
   const filteredRecipes = allRecipes
     .filter((recipe) => (mealType ? recipe.mealType === mealType : true))
-    .filter((recipe) => recipe.calories <= maxCalories);
+    .filter((recipe) => recipe.calories <= maxCalories)
+    .filter((recipe) =>
+      selectedIngredients.length === 0
+        ? true
+        : selectedIngredients.every((ing) => recipe.ingredients?.includes(ing))
+    );
 
   const returnToDefaultValues = () => {
     setMealType("");
     setMaxCalories(800);
+    setSelectedIngredients([]);
   };
 
   const favouriteRecipes = allRecipes.filter((r) => r.isFavourite === true);
+
+  const toogleIngredient = (ingredient) => {
+    setSelectedIngredients((prev) => {
+      return prev.includes(ingredient)
+        ? prev.filter((i) => i !== ingredient)
+        : [...prev, ingredient];
+    });
+  };
 
   return (
     <div className="app">
       <Header
         mealType={mealType}
         maxCalories={maxCalories}
+        selectedIngredients={selectedIngredients}
         onMealTypeChange={setMealType}
         onMaxCaloriesChange={setMaxCalories}
+        onIngredientToggle={toogleIngredient}
         onClear={() => {
           returnToDefaultValues();
         }}
