@@ -46,14 +46,6 @@
   gap: 5px;
 }
 
-.filters__actions button {
-  background-color: var(--main-color);
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  color: white;
-}
-
 .cards__container {
   margin: 1rem;
   display: flex;

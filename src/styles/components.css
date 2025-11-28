@@ -15,3 +15,22 @@
 .recipe-card * {
   background-color: white;
 }
+
+.create-recipe-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.create-recipe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.create-recipe-form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}

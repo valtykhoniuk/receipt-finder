@@ -1,4 +1,4 @@
-const ALL_INGREDIENTS = [
+const ALL_INGREDIENTS: string[] = [
   "egg",
   "cheese",
   "milk",
