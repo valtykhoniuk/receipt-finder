@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import Favourites from "./pages/Favourites.jsx";
+import Home from "./pages/Home.js";
+import Favourites from "./pages/Favourites.js";
 import Layout from "./pages/Layout.jsx";
-import Header from "./components/Header.jsx";
 import { controller } from "./api/api.js";
+import { Recipe } from "./utils/ types.js";
 
 function App() {
-  const [allRecipes, setAllRecipes] = useState([]);
-  const [mealType, setMealType] = useState("");
-  const [maxCalories, setMaxCalories] = useState(800);
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [mealType, setMealType] = useState<string>("");
+  const [maxCalories, setMaxCalories] = useState<number>(800);
+  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
   const loadRecipes = useCallback(async () => {
     const data = await controller("/receipts");
@@ -18,7 +18,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    loadRecipes();
+    async function fetchRecipes() {
+      const data = await controller("/receipts");
+      setAllRecipes(data);
+    }
+    fetchRecipes();
   }, [loadRecipes]);
 
   const filteredRecipes = allRecipes
@@ -27,7 +31,9 @@ function App() {
     .filter((recipe) =>
       selectedIngredients.length === 0
         ? true
-        : selectedIngredients.every((ing) => recipe.ingredients?.includes(ing))
+        : selectedIngredients.every((ingredient) =>
+            recipe.ingredients?.includes(ingredient)
+          )
     );
 
   const returnToDefaultValues = () => {
@@ -38,7 +44,7 @@ function App() {
 
   const favouriteRecipes = allRecipes.filter((r) => r.isFavourite === true);
 
-  const toggleIngredient = (ingredient) => {
+  const toggleIngredient = (ingredient: string) => {
     setSelectedIngredients((prev) => {
       return prev.includes(ingredient)
         ? prev.filter((i) => i !== ingredient)

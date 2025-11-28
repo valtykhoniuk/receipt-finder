@@ -1,6 +1,7 @@
+import { HeaderProps } from "../utils/ types.js";
 import Filters from "./Filters.jsx";
 
-const Header = ({
+const Header: React.FC<HeaderProps> = ({
   mealType,
   maxCalories,
   selectedIngredients,

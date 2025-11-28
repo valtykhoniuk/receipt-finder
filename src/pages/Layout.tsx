@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header.jsx";
+import { LayoutProps } from "../utils/ types.js";
 
-const Layout = ({
+const Layout: React.FC<LayoutProps> = ({
   mealType,
   maxCalories,
   selectedIngredients,

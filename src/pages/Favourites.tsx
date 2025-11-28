@@ -1,13 +1,13 @@
 import RecipeCard from "../components/RecipeCard";
+import { FavouritesProps } from "../utils/ types.js";
 
-const Home = ({ recipes }) => {
+const Favourites: React.FC<FavouritesProps> = ({ recipes }) => {
   return (
     <div className="cards__container">
       {recipes.map((recipe) => (
         <RecipeCard
           key={recipe.id}
           name={recipe.name}
-          img={recipe.image}
           calories={recipe.calories}
           desc={recipe.desc}
         />
@@ -16,4 +16,4 @@ const Home = ({ recipes }) => {
   );
 };
 
-export default Home;
+export default Favourites;

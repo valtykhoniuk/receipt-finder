@@ -1,6 +1,7 @@
 import ALL_INGREDIENTS from "../utils/constants";
+import { FiltersProps } from "../utils/ types";
 
-const Filters = ({
+const Filters: React.FC<FiltersProps> = ({
   mealType,
   maxCalories,
   selectedIngredients,

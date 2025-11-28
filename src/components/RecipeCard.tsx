@@ -1,6 +1,12 @@
 import React from "react";
+import { RecipeCardProps } from "../utils/ types.js";
 
-const RecipeCard = ({ name, calories, img, desc }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({
+  name,
+  calories,
+  img,
+  desc,
+}) => {
   return (
     <div className="recipe-card__container">
       <div className="recipe-card">
