@@ -20,8 +20,9 @@ import {
 
 type Recipe = {
   id: string;
-  title: string;
-  mealType?: string;
+  name: string;
+  desc: string;
+  mealType: string;
   calories: number;
   ingredients?: string[];
   isFavourite?: boolean;
