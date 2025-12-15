@@ -6,10 +6,26 @@ import Home from "./pages/Home";
 import Favourites from "./pages/Favourites";
 import Layout from "./pages/Layout";
 import { controller } from "./api/api";
-import { Recipe } from "./utils/ types";
 import CreateRecipe from "./pages/CreateRecipe";
 import EditRecipe from "./pages/EditRecipe";
 import RecipePage from "./pages/RecipePage";
+import {
+  useAppDispatch,
+  useAppSelector,
+  setMealType,
+  setMaxCalories,
+  toggleIngredient,
+  resetFilters,
+} from "./store/store";
+
+type Recipe = {
+  id: string;
+  title: string;
+  mealType?: string;
+  calories: number;
+  ingredients?: string[];
+  isFavourite?: boolean;
+};
 
 const AppContainer = styled.div`
   display: flex;
@@ -19,10 +35,10 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.filters);
+
   const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
-  const [mealType, setMealType] = useState<string>("");
-  const [maxCalories, setMaxCalories] = useState<number>(800);
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 
   const loadRecipes = useCallback(async () => {
     const data = await controller<Recipe[]>("/receipts");
@@ -34,12 +50,14 @@ function App() {
   }, [loadRecipes]);
 
   const filteredRecipes = allRecipes
-    .filter((recipe) => (mealType ? recipe.mealType === mealType : true))
-    .filter((recipe) => recipe.calories <= maxCalories)
     .filter((recipe) =>
-      selectedIngredients.length === 0
+      filters.mealType ? recipe.mealType === filters.mealType : true
+    )
+    .filter((recipe) => recipe.calories <= filters.maxCalories)
+    .filter((recipe) =>
+      filters.selectedIngredients.length === 0
         ? true
-        : selectedIngredients.every((ingredient) =>
+        : filters.selectedIngredients.every((ingredient) =>
             recipe.ingredients?.includes(ingredient)
           )
     );
@@ -57,20 +75,6 @@ function App() {
 
   const favouriteRecipes = allRecipes.filter((r) => r.isFavourite);
 
-  const toggleIngredient = (ingredient: string) => {
-    setSelectedIngredients((prev) =>
-      prev.includes(ingredient)
-        ? prev.filter((i) => i !== ingredient)
-        : [...prev, ingredient]
-    );
-  };
-
-  const returnToDefaultValues = () => {
-    setMealType("");
-    setMaxCalories(800);
-    setSelectedIngredients([]);
-  };
-
   return (
     <AppContainer>
       <Routes>
@@ -78,13 +82,13 @@ function App() {
           path="/"
           element={
             <Layout
-              mealType={mealType}
-              maxCalories={maxCalories}
-              selectedIngredients={selectedIngredients}
-              onMealTypeChange={setMealType}
-              onMaxCaloriesChange={setMaxCalories}
-              onIngredientToggle={toggleIngredient}
-              onClear={returnToDefaultValues}
+              mealType={filters.mealType}
+              maxCalories={filters.maxCalories}
+              selectedIngredients={filters.selectedIngredients}
+              onMealTypeChange={(v) => dispatch(setMealType(v))}
+              onMaxCaloriesChange={(v) => dispatch(setMaxCalories(v))}
+              onIngredientToggle={(v) => dispatch(toggleIngredient(v))}
+              onClear={() => dispatch(resetFilters())}
             />
           }
         >
